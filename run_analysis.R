@@ -15,12 +15,27 @@ features <- read.table("features.txt")
 ##Merging Full data
 X_data <- rbind(X_test,X_train)
 Y_data <- rbind(Y_test,Y_train)
+subject_data <- rbind(subject_test, subject_train)
 
 ## Convert the labels to character
 activity_labels$V2 <- as.character(activity_labels$V2)
 
-##Asign column names from feature.txt file
-colnames(X_data) <- featuresData$V2
+##Assign column names to X_data from features.txt file
+colnames(X_data) <- features$V2
+
+##Merging description to Y_data, without changing the order
+Y_data <- merge(Y_data,activity_labels,by="V1", sort=FALSE)
+
+##Assign column names to Y_data
+colnames(Y_data)<-c("activity-code", "activity-label")
+
+##Assign column name to subject_data
+colnames(subject_data) <- c("subject")
+
+
+##Total data
+total_data <- cbind(subject_data, Y_data, X_data)
+
 
 ##Function for detecting mean an std columns
 columnMeanStd <- function(x){
@@ -41,6 +56,13 @@ columnMeanStd <- function(x){
 }
 
 ##Obtain the columns with mean and std
-columnNamesMeanStd<-columnMeanStd(colnames(X_data))
-X_data <- X_data[,columnNamesMeanStd]
+columnNamesMeanStd<-columnMeanStd(colnames(total_data))
+total_data_meanStd <- total_data[,columnNamesMeanStd]
+
+##Write the tidy data set as a txt file
+write.table(total_data_meanStd, "tidyDataSet.txt", sep=",")
+
+##Create an independent tidy data set with the average of each variable for each activity and each subject
+total_data_aggregated<-aggregate(total_data[,4:564], list(Subject=total_data$subject, Activity=total_data$"activity-code"), mean)
+write.table(total_data_aggregated, "tidyAggregatedDataSet.txt", sep=",")
 
