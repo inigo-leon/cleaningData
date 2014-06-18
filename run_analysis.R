@@ -1,4 +1,3 @@
-
 ## Read files
 
 subject_test <- read.table("subject_test.txt")

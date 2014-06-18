@@ -5,7 +5,6 @@ This is a copy of the UCI HAR dataset file, "features_info.txt". The column name
 To see the transform, please see Readme.md
 
 
-
 Feature Selection 
 =================
 

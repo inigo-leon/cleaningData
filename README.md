@@ -1,6 +1,5 @@
 This file explains the whole operations for this assignment
 
-
 ## Read files
 First of all, I read all the necessary files into variables
 * subject_test
